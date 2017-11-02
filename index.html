@@ -1,0 +1,232 @@
+<html>
+
+	<style>
+		html, body {
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			border: 0;
+			overflow: hidden; /*  Disable scrollbars */
+			display: block;  /* No floating content on sides */
+		}
+	</style>
+<head>
+<script type="text/javascript">
+var bool=false;
+    window.addEventListener("load",function() {
+var goal=0;
+var canvas;
+var balx=100;
+var balspeedx=5;
+var balspeedy=5;
+var medrabY=250;
+const medrab=100;
+var medrab2Y=250;
+var player2=0;
+var player1=0;
+var baly=100;
+function bot()
+{
+if(medrab2Y<baly+30){
+medrab2Y+=8;
+}
+if(medrab2Y>baly-90){
+	medrab2Y-=8;
+}}
+
+
+
+
+function reset(){
+
+alert('Score:'+player1 +'-'+player2);
+baly=canvas.height/2;
+balx=canvas.width/2;
+balspeedx=5;
+balspeedy=4;
+if(goal==1)
+{balspeedx=-balspeedx;
+}else{balspeedx=balspeedx;}
+
+
+}
+
+function souris(evn){
+
+
+var rect=canvas.getBoundingClientRect();
+var root=document.documentElement;
+var mouseX=evn.clientX - rect.left -root.scrollLeft;
+var mouseY=evn.clientY - rect.top -root.scrollTop;
+return{
+x:mouseX,
+y:mouseY
+
+}}
+
+
+
+
+
+
+ canvas= document.getElementById('a');
+ ctx= canvas.getContext('2d');
+
+
+ 
+	
+
+		function update(){
+			bot();
+
+balx=balx+balspeedx;
+baly=baly+balspeedy;
+
+var b=canvas.width-20;
+var center=medrab2Y-(medrab/2);
+	  if(balx>b){   if(baly>center && baly <medrab2Y+medrab)
+	  { balspeedx=-balspeedx;
+
+   var angle=baly-(medrabY+medrab/2);
+    balspeedy=angle*0.085;
+
+
+
+
+	  }else {  player1+=1; goal=1; reset();}}
+
+
+	  if(balx<20) {  if(baly>medrabY && baly <medrabY+medrab)
+	  { 
+	   balspeedx=-balspeedx;
+
+   var angle=baly-(medrabY+medrab/2);
+
+    balspeedy=angle*0.1;
+        balspeedy=angle*0.085;
+
+
+
+
+	  }else{     //balspeedx=-balspeedx;
+               player2=player2+1;    goal=2; reset();
+	  }}
+
+  if(baly>canvas.height){balspeedy=-balspeedy;}
+	  if(baly<0) {balspeedy=-balspeedy;}
+
+	}
+
+function draw(){
+        ctx.clearRect(0,0,800,600);  
+
+
+var Img=new Image();
+Img.src='back.png';
+
+var pattern=ctx.createPattern(Img,'repeat');
+
+      
+ctx.fillStyle=pattern;
+ctx.fillRect(0,0,canvas.width,canvas.height);
+ctx.beginPath();
+
+color(0,medrabY,22,100,'#7cfc00');
+color(780,medrab2Y,22,100,'#7cfc00');
+
+ctx.beginPath();
+
+arc(balx,baly,10,0,Math.PI*2,true,'#48D1CC   ');
+
+ctx.font="30px Georgia";
+
+ctx.fillStyle='white';
+ctx.fillText("Score",380,40,333);
+ctx.fillText(player1+"-"+player2,391,60,333);
+
+
+var img = new Image();
+img.onload = function () {
+    ctx.drawImage(img, 360, 250,80,83);
+}
+img.src = "1.jpg";
+}
+function arc (x,y,w,a,pi,bool,color)
+{
+
+ctx.fillStyle=color;
+ctx.arc(x,y,w,a,pi,color);
+
+ctx.fill();
+      ctx.lineWidth = 2;
+ctx.strokeStyle = 'black';
+      ctx.stroke();         
+
+
+}
+function color (x,y,w,h,color)
+{
+	ctx.shadowColor='blue';
+ctx.lineJoin = "round";
+ctx.linerJoint='miter';
+ctx.lineWidth = 9;
+ctx.miterLimit=22;           
+ctx.strokeRect(x,y,w,h); 
+
+ctx.fillStyle=color;
+
+ctx.fillRect(x,y,w,h,color);
+
+
+
+
+canvas.addEventListener('mousemove',function(evn){
+
+
+var mousePos=souris(evn);
+medrabY=mousePos.y-(medrab/2);
+
+
+})
+
+
+
+}
+
+var b=1;
+draw();
+
+function run(){
+
+	update();
+
+draw();
+
+
+
+console.log(b);
+
+if(b===1){
+
+	          window.requestAnimationFrame(run); 
+
+}
+}
+
+
+   
+      canvas.addEventListener('mousedown', run);
+
+
+})
+</script>
+</head>
+<body>
+<canvas  width='800' height='600' id='a'  style = '      padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;   border: 1px ;   position: absolute; center: 0px; top: 0px;'></canvas>
+</body>
+
+
+</html>
